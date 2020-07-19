@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 760px) {
+  .side-bar {
+    position: static;
+    height: auto;
+  }
+  .top-navbar{
+    position: static;
+  }
+}
