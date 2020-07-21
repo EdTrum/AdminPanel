@@ -2,12 +2,13 @@ import React, {Component} from 'react'
 import {faChargingStation, faCubes, faDatabase, faSync, faUsers} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
+import {Link} from "react-router-dom"
 
 const cardItems = [
     {name: 'Categories', count: 100, icon: faCubes, appearance: 'text-warning fa-2x'},
     {name: 'Courses', count: 200, icon: faDatabase, appearance: 'text-primary fa-2x'},
     {name: 'Users', count: 300, icon: faUsers, appearance: 'text-muted fa-2x'},
-    {name: 'New Users', count: 50, icon: faChargingStation, appearance: 'text-success fa-2x'},
+    {name: 'Visitors', count: 50, icon: faChargingStation, appearance: 'text-success fa-2x'},
 ]
 
 const admins = [
@@ -23,7 +24,7 @@ class Home extends Component {
         const renderCardItems = cardItems.map(item => (
             <div className='col-sm-6 col-lg-3 p-2' key={item.name}>
                 <div className="card card-common">
-                    <div className="card-body">
+                    <Link to={`/${item.name.toLowerCase()}`} className="card-body">
                         <div className="d-flex justify-content-between">
                             <FontAwesomeIcon icon={item.icon} className={item.appearance}/>
                             <div className="text-right text-secondary">
@@ -31,7 +32,7 @@ class Home extends Component {
                                 <h4>{item.count}</h4>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                     <div className="card-footer">
                         <span className="card-action">
                             <FontAwesomeIcon icon={faSync}/>
@@ -97,4 +98,6 @@ const Styles = styled.div`
     .btn-appearance {
         width: 70px;
     }
+    .card-body{
+    text-decoration: none
 `

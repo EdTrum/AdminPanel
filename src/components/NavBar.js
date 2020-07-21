@@ -3,64 +3,33 @@ import {Button, Modal, Navbar} from "react-bootstrap"
 import avatarImg from '../assets/avatar.png'
 import styled from "styled-components"
 import {
-    faHome,
-    faUser,
-    faFileAlt,
-    faCubes,
-    faDatabase,
-    faSearch,
-    faComments,
-    faBell, faSignOutAlt
+    faHome, faUser, faFileAlt, faCubes, faDatabase, faSearch, faComments, faBell, faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import Layout from "../pages/Layout"
-import Home from "./Home"
-import Category from "../pages/Category"
-import Course from "../pages/Course"
-import Topic from "../pages/Topic"
-import User from "../pages/User"
+import {Link, NavLink} from "react-router-dom"
 
 const options = [
-    {name: 'Dashboard', icon: faHome},
-    {name: 'Categories', icon: faCubes},
-    {name: 'Courses', icon: faDatabase},
-    {name: 'Topics', icon: faFileAlt},
-    {name: 'Users', icon: faUser}
+    {name: 'Dashboard', icon: faHome, route: ''},
+    {name: 'Categories', icon: faCubes, route: 'categories'},
+    {name: 'Courses', icon: faDatabase, route: 'courses'},
+    {name: 'Topics', icon: faFileAlt, route: 'topics'},
+    {name: 'Users', icon: faUser, route: 'users'}
 ]
 
 function NavBar() {
-
     const [showModal, setShowModal] = useState(false)
-    const [option, setOption] = useState('')
-
-    const itemClick = option => {
-        setOption(option)
-    }
 
     const renderOptions = options.map((option, index) => (
-        <li className="nav-item sidebar-link" key={index} onClick={() => itemClick(option.name)}>
-            <a href="#" className="nav-link">
-                <FontAwesomeIcon icon={option.icon} className='text-light'/>
-                <span className='text-white p-3'>{option.name}</span>
-            </a>
-        </li>
+        <NavLink className="nav-item sidebar-link nav-link" key={index} to={`/${option.route}`}>
+            <FontAwesomeIcon icon={option.icon} className='text-light'/>
+            <span className='text-white p-3'>{option.name}</span>
+        </NavLink>
     ))
 
     const handleClose = () => setShowModal(false)
 
-    const renderOption = (() => {
-        switch (option) {
-            case "Dashboard": return <Home/>
-            case "Categories": return <Category/>
-            case "Courses": return <Course/>
-            case "Topics": return <Topic/>
-            case "Users": return <User/>
-            default: return <Home/>
-        }
-    })()
-
     return (
-        <div>
+        <>
             <Styles>
                 <Navbar expand='md' variant='light' style={{padding: 0, margin: 0}}>
                     <Navbar.Toggle aria-controls='basic-navbar-nav' className='ml-auto'/>
@@ -70,15 +39,15 @@ function NavBar() {
                                 {/*sidebar*/}
                                 <div className="col-xl-2 col-lg-3 col-md-4 side-bar fixed-top">
                                     <div className="bottom-border py-2 mb-2">
-                                        <a href="#"
-                                           className="navbar-brand  text-white d-block ml-auto text-center">
+                                        <Link to='/'
+                                              className="navbar-brand  text-white d-block ml-auto text-center">
                                             <span style={{fontSize: 16}}>EdTrum</span>
-                                        </a>
+                                        </Link>
                                     </div>
                                     <div className='bottom-border pb-2'>
                                         <img src={avatarImg} alt="avatar" className='rounded-circle mr-3'
                                              width='40'/>
-                                        <a href="#" className="text-white">John Doe</a>
+                                        <span className="text-white">John Doe</span>
                                     </div>
                                     <ul className="navbar-nav flex-column mt-4">
                                         {renderOptions}
@@ -105,24 +74,17 @@ function NavBar() {
                                         </div>
                                         <div className="col-md-3">
                                             <ul className="navbar-nav">
-                                                <li className="nav-item icon-parent">
-                                                    <a href="#" className="nav-link icon-bullet">
-                                                        <FontAwesomeIcon icon={faComments} className='text-muted'/>
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item icon-parent">
-                                                    <a href="#" className="nav-link icon-bullet">
-                                                        <FontAwesomeIcon icon={faBell} className='text-muted'/>
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item ml-md-auto"
-                                                    onClick={() => setShowModal(true)}>
-                                                    <a href="#" className="nav-link" data-toggle='modal'
-                                                       data-target='sign-out'>
-                                                        <FontAwesomeIcon icon={faSignOutAlt}
-                                                                         className='text-danger'/>
-                                                    </a>
-                                                </li>
+                                                <NavLink className="nav-item icon-parent nav-link icon-bullet" to='/'>
+                                                    <FontAwesomeIcon icon={faComments} className='text-muted'/>
+                                                </NavLink>
+                                                <NavLink className="nav-item icon-parent nav-link icon-bullet" to='/'>
+                                                    <FontAwesomeIcon icon={faBell} className='text-muted'/>
+                                                </NavLink>
+                                                <NavLink className="nav-item ml-md-auto nav-link" to='/'
+                                                         onClick={() => setShowModal(true)} data-toggle='modal'
+                                                         data-target='sign-out'>
+                                                    <FontAwesomeIcon icon={faSignOutAlt} className='text-danger'/>
+                                                </NavLink>
                                             </ul>
                                         </div>
                                     </div>
@@ -148,10 +110,7 @@ function NavBar() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Layout>
-                {renderOption}
-            </Layout>
-        </div>
+        </>
     )
 }
 
