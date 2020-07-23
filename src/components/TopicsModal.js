@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function CategoryModal() {
+function TopicsModal() {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -17,11 +17,11 @@ function CategoryModal() {
   return (
     <Fragment>
       <Button className='btn-sm' onClick={() => setShowModal(true)}>
-        Add Categories
+        Add Topics
       </Button>
       <Modal show={showModal} onHide={handleClose} size='md' centered>
         <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: 16 }}>Add a Category</Modal.Title>
+          <Modal.Title style={{ fontSize: 16 }}>Add a Topic</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -59,7 +59,7 @@ function CategoryModal() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant='success' size='sm' onClick={handleSubmit}>
-            Save Category
+            Save Topic
           </Button>
         </Modal.Footer>
       </Modal>
@@ -67,4 +67,4 @@ function CategoryModal() {
   );
 }
 
-export default CategoryModal;
+export default TopicsModal;

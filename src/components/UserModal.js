@@ -1,27 +1,27 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function CategoryModal() {
+function UserModal() {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [email, setEmail] = useState("");
+  // const [avatar, setAvatar] = useState("");
 
   const handleClose = () => setShowModal(false);
 
   const handleSubmit = () => {
-    const category = { name, description, avatar };
-    console.log(category);
+    const user = { name, email };
+    console.log(user);
   };
 
   return (
     <Fragment>
       <Button className='btn-sm' onClick={() => setShowModal(true)}>
-        Add Categories
+        Add User
       </Button>
       <Modal show={showModal} onHide={handleClose} size='md' centered>
         <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: 16 }}>Add a Category</Modal.Title>
+          <Modal.Title style={{ fontSize: 16 }}>Add a User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -36,17 +36,17 @@ function CategoryModal() {
             />
             <br />
             <textarea
-              name='description'
+              name='email'
               className='form-control'
-              id='description'
+              id='email'
               cols='10'
               rows='4'
-              placeholder='Description'
-              onChange={(event) => setDescription(event.target.value)}
-              value={description}
+              placeholder='Email Address'
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
             />
             <br />
-            <input
+            {/* <input
               name='avatar'
               id='avatar'
               type='text'
@@ -54,12 +54,12 @@ function CategoryModal() {
               placeholder='Image Url'
               onChange={(event) => setAvatar(event.target.value)}
               value={avatar}
-            />
+            /> */}
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant='success' size='sm' onClick={handleSubmit}>
-            Save Category
+            Save User
           </Button>
         </Modal.Footer>
       </Modal>
@@ -67,4 +67,4 @@ function CategoryModal() {
   );
 }
 
-export default CategoryModal;
+export default UserModal;
