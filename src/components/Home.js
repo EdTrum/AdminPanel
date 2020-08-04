@@ -1,36 +1,9 @@
-import React, { Component } from "react";
-import {
-  faChargingStation,
-  faCubes,
-  faDatabase,
-  faSync,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-
-const cardItems = [
-  {
-    name: "Categories",
-    count: 100,
-    icon: faCubes,
-    appearance: "text-warning fa-2x",
-  },
-  {
-    name: "Courses",
-    count: 200,
-    icon: faDatabase,
-    appearance: "text-primary fa-2x",
-  },
-  { name: "Users", count: 300, icon: faUsers, appearance: "text-muted fa-2x" },
-  {
-    name: "Visitors",
-    count: 50,
-    icon: faChargingStation,
-    appearance: "text-success fa-2x",
-  },
-];
+import React, {useEffect} from "react"
+import {faChargingStation, faCubes, faDatabase, faSync, faUsers,} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import styled from "styled-components"
+import {connect} from "react-redux"
+import {getCategories} from "../api"
 
 const admins = [
   { no: 1, name: "John Doe", email: "john@test.com", regDate: "01/01/1900" },
@@ -43,47 +16,75 @@ const admins = [
   },
 ];
 
-class Home extends Component {
-  render() {
-    const renderCardItems = cardItems.map((item) => (
+function Home({fetchCategories, categories}) {
+
+  useEffect(() => {
+    fetchCategories()
+  }, [fetchCategories])
+
+  const cardItems = [
+    {
+      name: "Categories",
+      icon: faCubes,
+      count: categories !== undefined ? categories.length : 0,
+      appearance: "text-warning fa-2x",
+    },
+    {
+      name: "Courses",
+      icon: faDatabase,
+      count: 20,
+      appearance: "text-primary fa-2x",
+    },
+    { name: "Users", count: 300, icon: faUsers, appearance: "text-muted fa-2x" },
+    {
+      name: "Visitors",
+      icon: faChargingStation,
+      count: 10,
+      appearance: "text-success fa-2x",
+    },
+  ];
+
+  const renderCardItems = cardItems.map((item) => (
       <div className='col-sm-6 col-lg-3 p-2' key={item.name}>
         <div className='card card-common'>
-          <Link to={`/${item.name.toLowerCase()}`} className='card-body'>
-            <div className='d-flex justify-content-between'>
-              <FontAwesomeIcon icon={item.icon} className={item.appearance} />
-              <div className='text-right text-secondary'>
-                <h6>{item.name}</h6>
-                <h4>{item.count}</h4>
+          {/*<Link to={`/${item.name.toLowerCase()}`} className='card-body'>*/}
+            <div className="card-body">
+              <div className='d-flex justify-content-between'>
+                <FontAwesomeIcon icon={item.icon} className={item.appearance}/>
+                <div className='text-right text-secondary'>
+                  <h6>{item.name}</h6>
+                  <h4>{item.count}</h4>
+                </div>
               </div>
             </div>
-          </Link>
+          {/*</Link>*/}
           <div className='card-footer'>
             <span className='card-action'>
-              <FontAwesomeIcon icon={faSync} />
+              <FontAwesomeIcon icon={faSync}/>
               <span className='ml-2'>Refresh</span>
             </span>
           </div>
         </div>
       </div>
-    ));
+  ))
 
-    return (
+  return (
       <Styles>
         <div className='row'>{renderCardItems}</div>
         <div>
           <h5 className='text-muted m-3'>Admins</h5>
           <table className='table table-striped bg-light text-center'>
             <thead>
-              <tr className='text-muted'>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Reg Date</th>
-                <th>Actions</th>
-              </tr>
+            <tr className='text-muted'>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Reg Date</th>
+              <th>Actions</th>
+            </tr>
             </thead>
             {admins.map((admin) => (
-              <tbody key={admin.no}>
+                <tbody key={admin.no}>
                 <tr>
                   <th>{admin.no}</th>
                   <td>{admin.name}</td>
@@ -95,16 +96,23 @@ class Home extends Component {
                     </button>
                   </td>
                 </tr>
-              </tbody>
+                </tbody>
             ))}
           </table>
         </div>
       </Styles>
-    );
-  }
+  )
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  categories: state.categoryData.categories
+})
+
+const mapActionsToProps = dispatch => ({
+  fetchCategories: () => dispatch(getCategories())
+})
+
+export default connect(mapStateToProps, mapActionsToProps)(Home);
 
 const Styles = styled.div`
     .card-action {
