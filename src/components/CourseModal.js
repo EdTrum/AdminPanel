@@ -1,70 +1,200 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState} from 'react';
 import { Button, Modal } from "react-bootstrap";
+import {connect} from 'react-redux';
+import {addCourse, clearErrors} from '../api';
 
-function CourseModal() {
+function CourseModal({addCourse, clearErrors, courseData: {errors, loading}}) {
   const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [avatar, setAvatar] = useState("");
+  // const [name, setName] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [avatar, setAvatar] = useState("");
+  //
+  const [course, setCourse] = useState({name:'', description: '', avatar: '', courseLink: '',
+    rating: '', certification: '', fee: 0, duration: 0, provider: '', progLanguages: ''});
 
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    clearErrors();
+    setShowModal(false);
+  }
 
-  const handleSubmit = () => {
-    const course = { name, description, avatar };
-    console.log(course);
+  const handleChange = e => {
+    setCourse({...course, [e.target.name]: e.target.value});
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addCourse(course);
+    setCourse({name:'', description: '', avatar: '', courseLink: '',
+      rating: '', certification: '', fee: 0, duration: 0, provider: '', progLanguages: ''})
   };
 
   return (
-    <Fragment>
-      <Button className='btn-sm' onClick={() => setShowModal(true)}>
-        Add Courses
-      </Button>
-      <Modal show={showModal} onHide={handleClose} size='md' centered>
-        <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: 16 }}>Add a Course</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <input
-              name='name'
-              type='text'
-              id='name'
-              className='form-control'
-              placeholder='Name'
-              onChange={(event) => setName(event.target.value)}
-              value={name}
-            />
-            <br />
-            <textarea
-              name='description'
-              className='form-control'
-              id='description'
-              cols='10'
-              rows='4'
-              placeholder='Description'
-              onChange={(event) => setDescription(event.target.value)}
-              value={description}
-            />
-            <br />
-            <input
-              name='avatar'
-              id='avatar'
-              type='text'
-              className='form-control'
-              placeholder='Image Url'
-              onChange={(event) => setAvatar(event.target.value)}
-              value={avatar}
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant='success' size='sm' onClick={handleSubmit}>
-            Save Course
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Fragment>
+      <Fragment>
+        <Button className='btn-sm' onClick={() => setShowModal(true)}>
+          Add Course
+        </Button>
+        <Modal show={showModal} onHide={handleClose} size='md' centered>
+          <Modal.Header closeButton>
+            <Modal.Title style={{ fontSize: 16 }}>Add a Course</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form onSubmit={handleSubmit}>
+              <input
+                  name='name'
+                  type='text'
+                  id='name'
+                  className='form-control'
+                  placeholder='Name'
+                  onChange={handleChange}
+                  value={course.name}
+                  required
+              />
+              <br />
+              <div>
+                {errors && <span className='error-msg'>{errors.name}</span>}
+              </div>
+              <textarea
+                  name='description'
+                  className='form-control'
+                  id='provider'
+                  cols='10'
+                  rows='4'
+                  placeholder='Description'
+                  onChange={handleChange}
+                  value={course.description}
+                  required
+              />
+              <div>
+                {errors && <span
+                    className='error-msg'>{errors.description}</span>}
+              </div>
+              <br />
+              <input name='avatar' id='avatar' type='text'
+                     className='form-control' placeholder='Image Url'
+                     onChange={handleChange} value={course.avatar}
+                     required/><br />
+              <input
+                  name='courseLink'
+                  id='courseLink'
+                  type='text'
+                  className='form-control'
+                  placeholder='Course Link'
+                  onChange={handleChange}
+                  value={course.courseLink}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.courseLink}</span>}
+              </div>
+              <br />
+              <input
+                  name='rating'
+                  id='rating'
+                  type='text'
+                  className='form-control'
+                  placeholder='Rating'
+                  onChange={handleChange}
+                  value={course.rating}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.rating}</span>}
+              </div>
+              <br />
+              <input
+                  name='certification'
+                  id='certification'
+                  type='boolean'
+                  className='form-control'
+                  placeholder='Certification'
+                  onChange={handleChange}
+                  value={course.certification}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.certification}</span>}
+              </div>
+              <br />
+              <input
+                  name='fee'
+                  id='fee'
+                  type='number'
+                  className='form-control'
+                  placeholder='Fee'
+                  onChange={handleChange}
+                  value={course.fee}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.fee}</span>}
+              </div>
+              <br />
+              <input
+                  name='duration'
+                  id='duration'
+                  type='number'
+                  className='form-control'
+                  placeholder='Duration'
+                  onChange={handleChange}
+                  value={course.duration}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.fee}</span>}
+              </div>
+              <br />
+              <input
+                  name='provider'
+                  id='provider'
+                  type='text'
+                  className='form-control'
+                  placeholder='Provider'
+                  onChange={handleChange}
+                  value={course.provider}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.provider}</span>}
+              </div>
+              <br />
+              <input
+                  name='progLanguages'
+                  id='progLanguages'
+                  type='text'
+                  className='form-control'
+                  placeholder='Programming Languages'
+                  onChange={handleChange}
+                  value={course.progLanguages}
+                  required
+              />
+              <div>
+                {errors && <span className='error-msg'>{errors.progLanguages}</span>}
+              </div>
+              <br />
+              <div className="text-center">
+                <button type='submit' className="btn btn-success form-control">Save Course</button>
+                {loading && (
+                    <div>
+                      <div className='spinner-border text-center m-2' role='status'/>
+                      <p>Please wait...</p>
+                    </div>
+                )}
+              </div>
+            </form>
+          </Modal.Body>
+        </Modal>
+      </Fragment>
   );
 }
 
-export default CourseModal;
+const mapStateToProps = state => ({
+  courseData: state.courseData
+})
+
+const mapActionsToProps = dispatch => ({
+  addCourse: (course) => dispatch(addCourse(course)),
+  clearErrors: () => dispatch(clearErrors())
+})
+
+export default connect(mapStateToProps, mapActionsToProps)(CourseModal)
+

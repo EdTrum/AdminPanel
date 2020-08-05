@@ -3,6 +3,7 @@ import {
     fetchCategoriesError, fetchCategoriesRequest, fetchCategoriesSuccess, addNewCategory, addNewCategoryError,
     addCategoryRequest
 } from "../redux/category/categoryActions"
+import {fetchCourseError, fetchCourseRequest, fetchCourseSuccess, addCourseRequest, addNewCourse, addNewCourseError} from '../redux/course/courseActions';
 import {signInError, signInRequest, signInSuccess, signOut} from "../redux/user/userActions"
 import {CLEAR_ERRORS} from "../redux/types"
 
@@ -58,6 +59,33 @@ export const addCategory = category => {
 export const clearErrors = () => {
     return dispatch => {
         dispatch({type: CLEAR_ERRORS})
+    }
+}
+
+export const getCourses = () => {
+    return async (dispatch) => {
+        dispatch(fetchCourseRequest(true))
+        const res = await axios.get('/courses')
+        try {
+            dispatch(fetchCourseSuccess(res.data))
+        } catch (e) {
+            dispatch(fetchCourseError(res.data))
+        }
+    }
+}
+
+export const addCourse = course => {
+    return (dispatch) => {
+        dispatch(addCourseRequest(true))
+        axios.post('/courses', course).then(res => {
+            dispatch(addNewCourse(res.data))
+        }).catch(e => {
+            if (e.response !== undefined){
+                dispatch(addNewCourseError(e.response.data))
+            } else {
+                console.log(e)
+            }
+        })
     }
 }
 
