@@ -108,6 +108,8 @@ const mapStateToProps = state => ({
   courseData: state.courseData
 })
 
-const mapActionsToProps = dispatch => ({})
+const mapActionsToProps = dispatch => ({
+
+})
 
 export default connect(mapStateToProps, mapActionsToProps)(Course)

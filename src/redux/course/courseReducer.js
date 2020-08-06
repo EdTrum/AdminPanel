@@ -18,12 +18,6 @@ const courseReducer = (state = initialState, action) => {
         courses: action.payload,
         errors: {}
       }
-    case actions.FETCH_CATEGORIES_FAILURE:
-      return {
-        loading: false,
-        courses: [],
-        errors: action.payload
-      }
     case actions.CLEAR_ERRORS:
       return {
         ...state, loading: false, errors: {}
@@ -34,10 +28,6 @@ const courseReducer = (state = initialState, action) => {
       }
     case actions.ADD_COURSE_SUCCESS:
       return {...state, courses: [...state.courses, action.payload], loading: false, errors: {}}
-    case actions.ADD_CATEGORY_ERROR:
-      return {
-        ...state, errors: action.payload,
-      }
     default:
       return state
   }

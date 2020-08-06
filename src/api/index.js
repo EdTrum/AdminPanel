@@ -74,10 +74,10 @@ export const getCourses = () => {
     }
 }
 
-export const addCourse = course => {
+export const addCourse = (course, categoryId) => {
     return (dispatch) => {
         dispatch(addCourseRequest(true))
-        axios.post('/courses', course).then(res => {
+        axios.post(`/courses/category/${categoryId}`, course).then(res => {
             dispatch(addNewCourse(res.data))
         }).catch(e => {
             if (e.response !== undefined){
