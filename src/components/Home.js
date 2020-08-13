@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
 import {connect} from "react-redux"
 import {getCategories} from "../api"
+import {getCourses} from '../api'
 
 const admins = [
   { no: 1, name: "John Doe", email: "john@test.com", regDate: "01/01/1900" },
@@ -16,11 +17,16 @@ const admins = [
   },
 ];
 
-function Home({fetchCategories, categories}) {
+function Home({fetchCategories, categories, fetchCourses, courses}) {
 
   useEffect(() => {
     fetchCategories()
   }, [fetchCategories])
+
+  useEffect(() => {
+    fetchCourses()
+  }, [fetchCourses])
+
 
   const cardItems = [
     {
@@ -32,7 +38,7 @@ function Home({fetchCategories, categories}) {
     {
       name: "Courses",
       icon: faDatabase,
-      count: 20,
+      count: courses !== undefined ? courses.length : 0,
       appearance: "text-primary fa-2x",
     },
     { name: "Users", count: 300, icon: faUsers, appearance: "text-muted fa-2x" },
@@ -105,11 +111,13 @@ function Home({fetchCategories, categories}) {
 }
 
 const mapStateToProps = state => ({
-  categories: state.categoryData.categories
+  categories: state.categoryData.categories,
+  courses: state.courseData.courses
 })
 
 const mapActionsToProps = dispatch => ({
-  fetchCategories: () => dispatch(getCategories())
+  fetchCategories: () => dispatch(getCategories()),
+  fetchCourses: () => dispatch(getCourses())
 })
 
 export default connect(mapStateToProps, mapActionsToProps)(Home);
